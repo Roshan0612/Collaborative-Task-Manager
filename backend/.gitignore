@@ -36,3 +36,5 @@ prisma/migrations/
 *.njsproj
 *.sln
 *.sw?
+
+/generated/prisma
