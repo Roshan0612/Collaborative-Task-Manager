@@ -6,7 +6,6 @@ export type User = {
 
 export type AuthResponse = {
   message: string;
-  token: string;
   user: User;
 };
 

@@ -4,39 +4,32 @@ import type { AuthResponse, LoginPayload, RegisterPayload, User } from '../types
 
 export type AuthContextValue = {
   user: User | null;
-  token: string | null;
   loading: boolean;
   login: (payload: LoginPayload) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore from localStorage on mount
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
-    if (savedToken && savedUser) {
-      setToken(savedToken);
+    (async () => {
       try {
-        setUser(JSON.parse(savedUser));
+        const { data } = await http.get<{ user: User }>("/auth/me");
+        setUser(data.user);
       } catch {
         setUser(null);
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    })();
   }, []);
 
   const persist = useCallback((data: AuthResponse) => {
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    setToken(data.token);
     setUser(data.user);
   }, []);
 
@@ -50,14 +43,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     persist(data);
   }, [persist]);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setToken(null);
+  const logout = useCallback(async () => {
+    try { await http.post('/auth/logout'); } catch {}
     setUser(null);
   }, []);
 
-  const value = useMemo<AuthContextValue>(() => ({ user, token, loading, login, register, logout }), [user, token, loading, login, register, logout]);
+  const value = useMemo<AuthContextValue>(() => ({ user, loading, login, register, logout }), [user, loading, login, register, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
