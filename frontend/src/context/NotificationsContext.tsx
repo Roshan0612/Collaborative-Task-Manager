@@ -31,7 +31,6 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
   return (
     <NotificationsContext.Provider value={value}>
       {children}
-      {/* Simple notification panel */}
       <div className="fixed top-4 right-4 z-50 w-80 space-y-2">
         {notifications.map((n) => (
           <div key={n.id} className="bg-white shadow border rounded p-3">

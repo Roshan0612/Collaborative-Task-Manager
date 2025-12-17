@@ -54,7 +54,6 @@ export function Dashboard() {
     socket.on('task:updated', onAny);
     socket.on('task:deleted', onAny);
     const onAssigned = (payload: any) => {
-      // Show notification only if current user is the assignee
       if (user && payload?.assignedToId === user.id) {
         addNotification('You were assigned a new task');
       }
@@ -78,7 +77,6 @@ export function Dashboard() {
         <button className="text-sm px-3 py-2 border rounded" onClick={logout}>Logout</button>
       </div>
 
-      {/* Task Creation Form */}
       <TaskForm onSuccess={() => {
         qc.invalidateQueries({ queryKey: ['tasks'] });
         qc.invalidateQueries({ queryKey: ['dashboard'] });

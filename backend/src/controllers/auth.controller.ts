@@ -13,7 +13,6 @@ export const register = async (req: Request, res: Response) => {
 
     const token = generateToken(user.id);
 
-    // Set HttpOnly cookie for JWT
     res.cookie('token', token, {
       httpOnly: true,
       secure: false,
@@ -65,13 +64,14 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Get current authenticated user profile.
+ * @requires authMiddleware - userId must be injected by auth middleware
+ */
 export const me = async (req: Request, res: Response) => {
   try {
-    // userId will be injected by authMiddleware
-    // we avoid direct DB import here, use repository
     const { UserRepository } = await import('../repositories/user.repository');
     const repo = new UserRepository();
-    // @ts-ignore - added by middleware
     const userId: string | undefined = (req as any).userId;
     if (!userId) return res.status(401).json({ message: 'Unauthorized' });
     const user = await repo.findById(userId);
@@ -82,6 +82,10 @@ export const me = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Update authenticated user's profile information.
+ * @requires authMiddleware - userId must be injected by auth middleware
+ */
 export const updateProfile = async (req: Request, res: Response) => {
   try {
     const { z } = await import('zod');
@@ -89,7 +93,6 @@ export const updateProfile = async (req: Request, res: Response) => {
     const parsed = schema.parse(req.body);
     const { UserRepository } = await import('../repositories/user.repository');
     const repo = new UserRepository();
-    // @ts-ignore
     const userId: string | undefined = (req as any).userId;
     if (!userId) return res.status(401).json({ message: 'Unauthorized' });
     const user = await repo.updateProfile(userId, { name: parsed.name });

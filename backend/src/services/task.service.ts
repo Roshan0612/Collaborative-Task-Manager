@@ -4,7 +4,6 @@ import { io } from '../index';
 
 const tasks = new TaskRepository();
 
-// Type aliases for Prisma enums
 type Status = 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'COMPLETED';
 type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 
@@ -31,6 +30,12 @@ export const UpdateTaskDto = z.object({
 });
 
 export class TaskService {
+  /**
+   * Create a new task and broadcast to all connected clients.
+   * @param payload - Validated task creation data
+   * @returns Created task with all properties
+   * @emits task:created - Notifies all clients of the new task
+   */
   async create(payload: z.infer<typeof CreateTaskDto>) {
     const data = { ...payload, dueDate: new Date(payload.dueDate) };
     const task = await tasks.create(data);
@@ -38,6 +43,14 @@ export class TaskService {
     return task;
   }
 
+  /**
+   * Update an existing task and broadcast changes.
+   * @param id - Task UUID to update
+   * @param payload - Partial update data
+   * @returns Updated task
+   * @emits task:updated - Notifies all clients of the update
+   * @emits task:assigned - Emitted when assignedToId changes
+   */
   async update(id: string, payload: z.infer<typeof UpdateTaskDto>) {
     const data = { ...payload, dueDate: payload.dueDate ? new Date(payload.dueDate) : undefined };
     const before = await tasks.findById(id);
@@ -49,6 +62,12 @@ export class TaskService {
     return task;
   }
 
+  /**
+   * Delete a task and notify all clients.
+   * @param id - Task UUID to delete
+   * @returns Deleted task
+   * @emits task:deleted - Notifies all clients of the deletion
+   */
   async delete(id: string) {
     const task = await tasks.delete(id);
     io.emit('task:deleted', { id });
@@ -59,10 +78,20 @@ export class TaskService {
     return tasks.findById(id);
   }
 
+  /**
+   * List tasks with optional filters and sorting.
+   * @param filter - Status, priority, and sort options
+   * @returns Filtered and sorted task list
+   */
   async list(filter: { status?: string; priority?: string; sort?: 'asc'|'desc' }) {
     return tasks.list({ status: filter.status as Status | undefined, priority: filter.priority as Priority | undefined, sortByDueDate: filter.sort });
   }
 
+  /**
+   * Get personalized dashboard data for a user.
+   * @param userId - User UUID
+   * @returns Object with 'mine' (created/assigned tasks) and 'overdue' tasks
+   */
   async dashboard(userId: string) {
     const mine = await tasks.findByCreatorOrAssignee(userId);
     const overdue = await tasks.findOverdue(new Date(), userId);

@@ -29,29 +29,17 @@ export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
   const form = useForm<TaskFormData>();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
-
-  const fetchUsers = async () => {
-    try {
-      const { data } = await http.get<User[]>('/users');
-      setUsers(data);
-    } catch (err) {
-      // Fallback if no users endpoint
-      setUsers([]);
-    }
-  };
 
   const onSubmit = async (values: TaskFormData) => {
     setError('');
     const parsed = taskSchema.safeParse(values);
     if (!parsed.success) {
-      setError(parsed.error.errors[0].message);
+      setError(parsed.error.issues[0].message);
       return;
     }
 
     try {
       setLoading(true);
-      // Convert to ISO datetime
       const dueDateTime = new Date(values.dueDate).toISOString();
       await http.post('/tasks', {
         ...values,
