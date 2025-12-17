@@ -3,6 +3,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { http } from '../api/http';
 import { socket } from '../api/socket';
 import { useEffect, useState } from 'react';
+import { useNotifications } from '../context/NotificationsContext';
+import { TaskForm } from './TaskForm';
 
 type Task = {
   id: string;
@@ -18,6 +20,7 @@ type Task = {
 export function Dashboard() {
   const { user, logout } = useAuth();
   const qc = useQueryClient();
+  const { addNotification } = useNotifications();
   const [status, setStatus] = useState<string>('');
   const [priority, setPriority] = useState<string>('');
   const [sort, setSort] = useState<'asc'|'desc'|'none'>('none');
@@ -50,14 +53,21 @@ export function Dashboard() {
     socket.on('task:created', onAny);
     socket.on('task:updated', onAny);
     socket.on('task:deleted', onAny);
-    socket.on('task:assigned', onAny);
+    const onAssigned = (payload: any) => {
+      // Show notification only if current user is the assignee
+      if (user && payload?.assignedToId === user.id) {
+        addNotification('You were assigned a new task');
+      }
+      onAny();
+    };
+    socket.on('task:assigned', onAssigned);
     return () => {
       socket.off('task:created', onAny);
       socket.off('task:updated', onAny);
       socket.off('task:deleted', onAny);
-      socket.off('task:assigned', onAny);
+      socket.off('task:assigned', onAssigned);
     };
-  }, [qc]);
+  }, [qc, user, addNotification]);
 
   if (!user) return <div className="p-8">Please login.</div>;
 
@@ -67,6 +77,12 @@ export function Dashboard() {
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <button className="text-sm px-3 py-2 border rounded" onClick={logout}>Logout</button>
       </div>
+
+      {/* Task Creation Form */}
+      <TaskForm onSuccess={() => {
+        qc.invalidateQueries({ queryKey: ['tasks'] });
+        qc.invalidateQueries({ queryKey: ['dashboard'] });
+      }} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="border rounded p-4">
