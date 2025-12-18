@@ -17,16 +17,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+    // Fallback to hide the loader quickly even if the API is slow/cold-starting
+    const fallback = setTimeout(() => {
+      if (mounted) setLoading(false);
+    }, 1500);
+
     (async () => {
       try {
-        const { data } = await http.get<{ user: User }>("/auth/me");
-        setUser(data.user);
+        const { data } = await http.get<{ user: User }>("/auth/me", { timeout: 4000 });
+        if (mounted) setUser(data.user);
       } catch {
-        setUser(null);
+        if (mounted) setUser(null);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
+        clearTimeout(fallback);
       }
     })();
+
+    return () => {
+      mounted = false;
+      clearTimeout(fallback);
+    };
   }, []);
 
   const persist = useCallback((data: AuthResponse) => {
