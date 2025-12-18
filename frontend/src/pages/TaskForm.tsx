@@ -54,7 +54,7 @@ export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
   };
 
   return (
-    <div className="border rounded p-6 bg-white">
+    <div className="border rounded p-6 bg-yellow-50">
       <h2 className="text-xl font-semibold mb-4">Create New Task</h2>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <div>
