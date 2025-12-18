@@ -5,6 +5,7 @@ import { socket } from '../api/socket';
 import { useEffect, useState } from 'react';
 import { useNotifications } from '../context/NotificationsContext';
 import { TaskForm } from './TaskForm';
+import styles from './Dashboard.module.css';
 
 type Task = {
   id: string;
@@ -71,7 +72,8 @@ export function Dashboard() {
   if (!user) return <div className="p-8">Please login.</div>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className={styles.dashboardContainer}>
+      <div className={styles.dashboardContent}>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <button className="text-sm px-3 py-2 border rounded" onClick={logout}>Logout</button>
@@ -156,6 +158,7 @@ export function Dashboard() {
             </ul>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

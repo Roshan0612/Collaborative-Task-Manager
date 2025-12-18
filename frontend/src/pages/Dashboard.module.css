@@ -1,0 +1,23 @@
+.dashboardContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="1200" height="600" fill="url(%23grid)"/></svg>');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+.dashboardContent {
+  padding: 24px;
+  space-y: 24px;
+}
+
+@media (max-width: 768px) {
+  .dashboardContainer {
+    background-attachment: scroll;
+  }
+
+  .dashboardContent {
+    padding: 16px;
+  }
+}
