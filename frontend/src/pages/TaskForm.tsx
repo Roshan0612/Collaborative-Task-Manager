@@ -22,8 +22,6 @@ type TaskFormData = {
   assignedToId: string;
 };
 
-type User = { id: string; name: string; email: string };
-
 export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
   const { user } = useAuth();
   const form = useForm<TaskFormData>();

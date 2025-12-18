@@ -12,11 +12,11 @@ export const register = async (req: Request, res: Response) => {
     const user = await authService.register(validatedData.name, validatedData.email, validatedData.password);
 
     const token = generateToken(user.id);
-
+    const isProd = process.env.NODE_ENV === 'production';
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.status(201).json({
@@ -41,11 +41,11 @@ export const login = async (req: Request, res: Response) => {
 
     const user = await authService.login(validatedData.email, validatedData.password);
     const token = generateToken(user.id);
-
+    const isProd = process.env.NODE_ENV === 'production';
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.json({
@@ -106,6 +106,7 @@ export const updateProfile = async (req: Request, res: Response) => {
 };
 
 export const logout = async (_req: Request, res: Response) => {
-  res.clearCookie('token', { httpOnly: true, sameSite: 'lax' });
+  const isProd = process.env.NODE_ENV === 'production';
+  res.clearCookie('token', { httpOnly: true, sameSite: isProd ? 'none' : 'lax', secure: isProd });
   res.json({ message: 'Logged out' });
 };
