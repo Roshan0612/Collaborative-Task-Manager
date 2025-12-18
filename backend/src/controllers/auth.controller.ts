@@ -31,6 +31,9 @@ export const register = async (req: Request, res: Response) => {
     if (error.name === 'ZodError') {
       return res.status(400).json({ message: 'Validation error', errors: error.errors });
     }
+    if (error?.message === 'USER_EXISTS') {
+      return res.status(409).json({ message: 'User already exists' });
+    }
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
@@ -59,6 +62,9 @@ export const login = async (req: Request, res: Response) => {
   } catch (error: any) {
     if (error.name === 'ZodError') {
       return res.status(400).json({ message: 'Validation error', errors: error.errors });
+    }
+    if (error?.message === 'INVALID_CREDENTIALS') {
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
     res.status(500).json({ message: 'Server error', error: error.message });
   }

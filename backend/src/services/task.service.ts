@@ -1,8 +1,10 @@
 import { TaskRepository } from '../repositories/task.repository';
 import { z } from 'zod';
-import { io } from '../index';
+// import io dynamically inside methods to avoid circular import at module load
+import { NotificationService } from './notification.service';
 
 const tasks = new TaskRepository();
+const notifications = new NotificationService();
 
 type Status = 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'COMPLETED';
 type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
@@ -39,7 +41,12 @@ export class TaskService {
   async create(payload: z.infer<typeof CreateTaskDto>) {
     const data = { ...payload, dueDate: new Date(payload.dueDate) };
     const task = await tasks.create(data);
-    io.emit('task:created', task);
+    try {
+      const { io } = await import('../index');
+      io.emit('task:created', task);
+    } catch (e) {
+      console.error('Socket emit failed', e);
+    }
     return task;
   }
 
@@ -55,9 +62,25 @@ export class TaskService {
     const data = { ...payload, dueDate: payload.dueDate ? new Date(payload.dueDate) : undefined };
     const before = await tasks.findById(id);
     const task = await tasks.update(id, data);
-    io.emit('task:updated', task);
+    try {
+      const { io } = await import('../index');
+      io.emit('task:updated', task);
+    } catch (e) {
+      console.error('Socket emit failed', e);
+    }
     if (payload.assignedToId && before?.assignedToId !== payload.assignedToId) {
-      io.emit('task:assigned', { taskId: id, assignedToId: payload.assignedToId });
+      try {
+        const { io } = await import('../index');
+        io.emit('task:assigned', { taskId: id, assignedToId: payload.assignedToId });
+      } catch (e) {
+        console.error('Socket emit failed', e);
+      }
+      // persist a notification for the assignee
+      try {
+        await notifications.createForUser(payload.assignedToId, `You were assigned task ${task.title}`);
+      } catch (e) {
+        console.error('Failed to create notification', e);
+      }
     }
     return task;
   }
@@ -70,7 +93,12 @@ export class TaskService {
    */
   async delete(id: string) {
     const task = await tasks.delete(id);
-    io.emit('task:deleted', { id });
+    try {
+      const { io } = await import('../index');
+      io.emit('task:deleted', { id });
+    } catch (e) {
+      console.error('Socket emit failed', e);
+    }
     return task;
   }
 

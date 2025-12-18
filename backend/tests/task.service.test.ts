@@ -9,8 +9,8 @@ describe('TaskService DTO validation', () => {
       dueDate: new Date().toISOString(),
       priority: 'HIGH',
       status: 'TODO',
-      creatorId: '11111111-1111-1111-1111-111111111111',
-      assignedToId: '22222222-2222-2222-2222-222222222222',
+      creatorId: '550e8400-e29b-41d4-a716-446655440000',
+      assignedToId: '6fa459ea-ee8a-3ca4-894e-db77e160355e',
     };
     expect(() => CreateTaskDto.parse(good)).not.toThrow();
 
