@@ -113,7 +113,7 @@ export function Dashboard() {
         <div className="md:col-span-2 border rounded p-4">
           <h2 className="font-semibold mb-2">All Tasks</h2>
           {listQuery.isLoading ? (
-            <div>Loading...</div>
+            <div></div>
           ) : (
             <ul className="space-y-2">
               {listQuery.data?.map((t: any) => (
@@ -134,7 +134,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="border rounded p-4">
           <h2 className="font-semibold mb-2">My Tasks (created/assigned)</h2>
-          {dashQuery.isLoading ? <div>Loading...</div> : (
+          {dashQuery.isLoading ? <div></div> : (
             <ul className="space-y-2">
               {dashQuery.data?.mine?.map((t: any) => (
                 <li key={t.id} className="border p-2 rounded flex justify-between">
@@ -147,7 +147,7 @@ export function Dashboard() {
         </div>
         <div className="border rounded p-4">
           <h2 className="font-semibold mb-2">Overdue</h2>
-          {dashQuery.isLoading ? <div>Loading...</div> : (
+          {dashQuery.isLoading ? <div></div> : (
             <ul className="space-y-2">
               {dashQuery.data?.overdue?.map((t: any) => (
                 <li key={t.id} className="border p-2 rounded flex justify-between">
