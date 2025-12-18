@@ -2,6 +2,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useState } from 'react';
+import styles from './AuthForms.module.css';
 
 const loginSchema = z.object({ email: z.string().email(), password: z.string().min(1) });
 const registerSchema = z.object({ name: z.string().min(2), email: z.string().email(), password: z.string().min(6) });
@@ -14,6 +15,7 @@ export function AuthForms() {
   const [registerError, setRegisterError] = useState<string>('');
   const [loginLoading, setLoginLoading] = useState(false);
   const [registerLoading, setRegisterLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   const onLogin = async (values: { email: string; password: string }) => {
     setLoginError('');
@@ -50,38 +52,65 @@ export function AuthForms() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-      <div className="border rounded p-6">
-        <h2 className="text-xl font-semibold mb-4">Login</h2>
-        <form className="space-y-4" onSubmit={loginForm.handleSubmit(onLogin)}>
-          <input className="w-full border p-2 rounded" placeholder="Email" {...loginForm.register('email')} />
-          <input className="w-full border p-2 rounded" placeholder="Password" type="password" {...loginForm.register('password')} />
-          {loginError && <div className="text-red-600 text-sm">{loginError}</div>}
-          <button 
-            className="bg-blue-600 text-white px-4 py-2 rounded w-full disabled:opacity-50" 
-            type="submit"
-            disabled={loginLoading}
-          >
-            {loginLoading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-      </div>
-      <div className="border rounded p-6">
-        <h2 className="text-xl font-semibold mb-4">Register</h2>
-        <form className="space-y-4" onSubmit={regForm.handleSubmit(onRegister)}>
-          <input className="w-full border p-2 rounded" placeholder="Name" {...regForm.register('name')} />
-          <input className="w-full border p-2 rounded" placeholder="Email" {...regForm.register('email')} />
-          <input className="w-full border p-2 rounded" placeholder="Password" type="password" {...regForm.register('password')} />
-          {registerError && <div className="text-red-600 text-sm">{registerError}</div>}
-          <button 
-            className="bg-green-600 text-white px-4 py-2 rounded w-full disabled:opacity-50" 
-            type="submit"
-            disabled={registerLoading}
-          >
-            {registerLoading ? 'Registering...' : 'Register'}
-          </button>
-        </form>
-      </div>
+    <div className={styles.container}>
+      {isLogin ? (
+        <div className={styles.formWrapper}>
+          <div className={styles.formCard}>
+            <h2 className={styles.title}>Login</h2>
+            <form className={styles.form} onSubmit={loginForm.handleSubmit(onLogin)}>
+              <input className={styles.input} placeholder="Email" {...loginForm.register('email')} />
+              <input className={styles.input} placeholder="Password" type="password" {...loginForm.register('password')} />
+              {loginError && <div className={styles.error}>{loginError}</div>}
+              <button 
+                className={styles.buttonLogin}
+                type="submit"
+                disabled={loginLoading}
+              >
+                {loginLoading ? 'Logging in...' : 'Login'}
+              </button>
+            </form>
+            <div className={styles.helperText}>
+              Haven't registered yet?{' '}
+              <button
+                type="button"
+                className={styles.link}
+                onClick={() => setIsLogin(false)}
+              >
+                Register
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.formWrapper}>
+          <div className={styles.formCard}>
+            <h2 className={styles.title}>Register</h2>
+            <form className={styles.form} onSubmit={regForm.handleSubmit(onRegister)}>
+              <input className={styles.input} placeholder="Name" {...regForm.register('name')} />
+              <input className={styles.input} placeholder="Email" {...regForm.register('email')} />
+              <input className={styles.input} placeholder="Password" type="password" {...regForm.register('password')} />
+              {registerError && <div className={styles.error}>{registerError}</div>}
+              <button 
+                className={styles.buttonRegister}
+                type="submit"
+                disabled={registerLoading}
+              >
+                {registerLoading ? 'Registering...' : 'Register'}
+              </button>
+            </form>
+            <div className={styles.helperText}>
+              Already have an account?{' '}
+              <button
+                type="button"
+                className={styles.link}
+                onClick={() => setIsLogin(true)}
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
