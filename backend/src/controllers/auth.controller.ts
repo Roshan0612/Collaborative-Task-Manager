@@ -116,3 +116,17 @@ export const logout = async (_req: Request, res: Response) => {
   res.clearCookie('token', { httpOnly: true, sameSite: isProd ? 'none' : 'lax', secure: isProd });
   res.json({ message: 'Logged out' });
 };
+
+/**
+ * Get all registered users (for assigning tasks).
+ */
+export const getAllUsers = async (_req: Request, res: Response) => {
+  try {
+    const { UserRepository } = await import('../repositories/user.repository');
+    const repo = new UserRepository();
+    const users = await repo.findAll();
+    res.json({ users });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};

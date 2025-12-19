@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { http } from '../api/http';
 import { useAuth } from '../hooks/useAuth';
 
@@ -22,11 +22,34 @@ type TaskFormData = {
   assignedToId: string;
 };
 
+type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
   const { user } = useAuth();
   const form = useForm<TaskFormData>();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const { data } = await http.get<{ users: User[] }>('/auth/users');
+        setUsers(data.users);
+      } catch (err) {
+        console.error('Failed to fetch users:', err);
+        setError('Failed to load users');
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const onSubmit = async (values: TaskFormData) => {
     setError('');
@@ -110,13 +133,25 @@ export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
 
         <div>
           <label className="block text-sm font-medium mb-1">Assign To</label>
-          <input
-            className="w-full border p-2 rounded"
-            placeholder="User ID (UUID)"
-            {...form.register('assignedToId')}
-          />
+          {loadingUsers ? (
+            <select className="w-full border p-2 rounded" disabled>
+              <option>Loading users...</option>
+            </select>
+          ) : (
+            <select
+              className="w-full border p-2 rounded"
+              {...form.register('assignedToId')}
+            >
+              <option value="">Select a user</option>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name} ({u.email})
+                </option>
+              ))}
+            </select>
+          )}
           <p className="text-xs text-gray-500 mt-1">
-            Enter the user ID to assign this task. You can find user IDs in Prisma Studio.
+            Select a registered user to assign this task to.
           </p>
         </div>
 

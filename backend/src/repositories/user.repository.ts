@@ -13,4 +13,7 @@ export class UserRepository {
   updateProfile(id: string, data: { name?: string }) {
     return prisma.user.update({ where: { id }, data });
   }
+  findAll() {
+    return prisma.user.findMany({ select: { id: true, name: true, email: true } });
+  }
 }

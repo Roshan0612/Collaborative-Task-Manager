@@ -5,7 +5,11 @@ import { socket } from '../api/socket';
 import { useEffect, useState } from 'react';
 import { useNotifications } from '../context/NotificationsContext';
 import { TaskForm } from './TaskForm';
+import { Profile } from './Profile';
+import { TaskItem } from '../components/TaskItem';
 import styles from './Dashboard.module.css';
+
+type PageView = 'dashboard' | 'profile';
 
 type Task = {
   id: string;
@@ -25,6 +29,7 @@ export function Dashboard() {
   const [status, setStatus] = useState<string>('');
   const [priority, setPriority] = useState<string>('');
   const [sort, setSort] = useState<'asc'|'desc'|'none'>('none');
+  const [currentPage, setCurrentPage] = useState<PageView>('dashboard');
 
   const listQuery = useQuery({
     queryKey: ['tasks', { status, priority, sort }],
@@ -73,10 +78,22 @@ export function Dashboard() {
 
   return (
     <div className={styles.dashboardContainer}>
+      {currentPage === 'profile' ? (
+        <Profile onBack={() => setCurrentPage('dashboard')} />
+      ) : (
+        <>
       <div className={styles.dashboardContent}>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center flex-wrap gap-2">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <button className="text-sm px-3 py-2 border rounded" onClick={logout}>Logout</button>
+        <div className="flex gap-2 flex-wrap">
+          <button 
+            className="text-sm px-3 py-2 border rounded hover:bg-blue-100 transition" 
+            onClick={() => setCurrentPage('profile')}
+          >
+            Profile
+          </button>
+          <button className="text-sm px-3 py-2 border rounded hover:bg-red-100 transition" onClick={logout}>Logout</button>
+        </div>
       </div>
 
       <TaskForm onSuccess={() => {
@@ -117,14 +134,15 @@ export function Dashboard() {
           ) : (
             <ul className="space-y-2">
               {listQuery.data?.map((t: any) => (
-                <li key={t.id} className="border p-2 rounded">
-                  <div className="flex justify-between">
-                    <span className="font-medium">{t.title}</span>
-                    <span className="text-xs">{new Date(t.dueDate).toLocaleString()}</span>
-                  </div>
-                  <div className="text-sm">{t.description}</div>
-                  <div className="text-xs">Priority: {t.priority} | Status: {t.status}</div>
-                </li>
+                <TaskItem
+                  key={t.id}
+                  task={t}
+                  onStatusChange={() => {
+                    qc.invalidateQueries({ queryKey: ['tasks'] });
+                    qc.invalidateQueries({ queryKey: ['dashboard'] });
+                  }}
+                  showFullDetails
+                />
               ))}
             </ul>
           )}
@@ -137,10 +155,14 @@ export function Dashboard() {
           {dashQuery.isLoading ? <div></div> : (
             <ul className="space-y-2">
               {dashQuery.data?.mine?.map((t: any) => (
-                <li key={t.id} className="border p-2 rounded flex justify-between">
-                  <span>{t.title}</span>
-                  <span className="text-xs">{t.status}</span>
-                </li>
+                <TaskItem
+                  key={t.id}
+                  task={t}
+                  onStatusChange={() => {
+                    qc.invalidateQueries({ queryKey: ['tasks'] });
+                    qc.invalidateQueries({ queryKey: ['dashboard'] });
+                  }}
+                />
               ))}
             </ul>
           )}
@@ -160,6 +182,8 @@ export function Dashboard() {
         </div>
       </div>
       </div>
+        </>
+      )}
     </div>
   );
 }

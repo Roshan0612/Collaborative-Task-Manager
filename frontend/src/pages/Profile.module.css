@@ -1,0 +1,292 @@
+.profileContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.profileCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.headerButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.logoutBtn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.backBtn {
+  background-color: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.backBtn:hover {
+  background-color: #7c3aed;
+}
+
+.logoutBtn:hover {
+  background-color: #dc2626;
+}
+
+.logoutBtn:active {
+  transform: scale(0.98);
+}
+
+.message {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.message.success {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.message.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.profileContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input,
+.inputDisabled {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+
+.input {
+  border-color: #667eea;
+  background-color: #f9fafb;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #667eea;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.inputDisabled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.displayValue {
+  padding: 0.75rem 1rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #374151;
+  word-break: break-all;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.editBtn,
+.saveBtn,
+.cancelBtn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.editBtn {
+  background-color: #667eea;
+  color: white;
+}
+
+.editBtn:hover {
+  background-color: #5568d3;
+}
+
+.editBtn:active {
+  transform: scale(0.98);
+}
+
+.saveBtn {
+  background-color: #10b981;
+  color: white;
+}
+
+.saveBtn:hover {
+  background-color: #059669;
+}
+
+.saveBtn:disabled {
+  background-color: #a3e4d7;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.cancelBtn:hover {
+  background-color: #d1d5db;
+}
+
+.cancelBtn:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .profileCard {
+    padding: 1.5rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .logoutBtn {
+    align-self: flex-start;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .editBtn,
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+  }
+
+  .input,
+  .inputDisabled,
+  .displayValue {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+@media (max-width: 480px) {
+  .profileContainer {
+    padding: 0.5rem;
+  }
+
+  .profileCard {
+    padding: 1rem;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .message {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .label {
+    font-size: 0.75rem;
+  }
+
+  .input,
+  .inputDisabled,
+  .displayValue {
+    padding: 0.625rem 0.75rem;
+    font-size: 16px;
+  }
+
+  .editBtn,
+  .saveBtn,
+  .cancelBtn {
+    padding: 0.625rem 1rem;
+    font-size: 0.75rem;
+  }
+}

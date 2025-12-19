@@ -44,7 +44,7 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
       mounted = false;
       socket.off('notification:created', onCreated);
     };
-  }, []);
+  }, [user]);
 
   const addNotification = (message: string) => {
     const id = Math.random().toString(36).slice(2);
