@@ -4,7 +4,6 @@ import type { AuthResponse, LoginPayload, RegisterPayload, User } from '../types
 
 export type AuthContextValue = {
   user: User | null;
-  loading: boolean;
   login: (payload: LoginPayload) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
@@ -14,7 +13,6 @@ export const AuthContext = createContext<AuthContextValue | undefined>(undefined
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -48,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   }, []);
 
-  const value = useMemo<AuthContextValue>(() => ({ user, loading, login, register, logout }), [user, loading, login, register, logout]);
+  const value = useMemo<AuthContextValue>(() => ({ user, login, register, logout }), [user, login, register, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
