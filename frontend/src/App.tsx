@@ -4,9 +4,8 @@ import { Dashboard } from './pages/Dashboard';
 import './App.css';
 
 function App() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
-  if (loading) return <div className="p-8">Loading...</div>;
   return user ? <Dashboard /> : <AuthForms />;
 }
 

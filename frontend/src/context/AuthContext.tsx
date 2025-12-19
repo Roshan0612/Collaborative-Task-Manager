@@ -14,19 +14,19 @@ export const AuthContext = createContext<AuthContextValue | undefined>(undefined
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     (async () => {
       try {
         const { data } = await http.get<{ user: User }>("/auth/me");
-        setUser(data.user);
+        if (isMounted) setUser(data.user);
       } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
+        if (isMounted) setUser(null);
       }
     })();
+    return () => { isMounted = false; };
   }, []);
 
   const persist = useCallback((data: AuthResponse) => {
