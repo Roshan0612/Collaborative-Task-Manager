@@ -24,7 +24,7 @@ type Task = {
 };
 
 export function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const qc = useQueryClient();
   const { addNotification } = useNotifications();
   const [status, setStatus] = useState<string>('');

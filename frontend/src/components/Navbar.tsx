@@ -13,14 +13,7 @@ export function Navbar({ onCreateTaskClick, onProfileClick }: NavbarProps) {
   const { user, logout } = useAuth();
   const { notifications, removeNotification } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const notifRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
