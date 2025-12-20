@@ -47,6 +47,14 @@ export class TaskService {
     } catch (e) {
       console.error('Socket emit failed', e);
     }
+    // if created with an assignee, persist a notification for them
+    if (task.assignedToId) {
+      try {
+        await notifications.createForUser(task.assignedToId, `You were assigned task ${task.title}`);
+      } catch (e) {
+        console.error('Failed to create notification for assignee', e);
+      }
+    }
     return task;
   }
 

@@ -1,23 +1,298 @@
+/* Dashboard Module Styles */
+
 .dashboardContainer {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%),
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="1200" height="600" fill="url(%23grid)"/></svg>');
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
 }
 
 .dashboardContent {
-  padding: 24px;
-  space-y: 24px;
+  flex: 1;
+  padding: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboardTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  animation: slideInUp 0.3s ease;
+  transition: all var(--transition-smooth);
+}
+
+.card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-text-primary);
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filterSelect {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filterSelect:hover {
+  border-color: var(--color-primary);
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.loadingText {
+  color: var(--color-text-tertiary);
+  font-size: 0.875rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.emptyState {
+  color: var(--color-text-tertiary);
+  font-size: 0.875rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.multiCardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.overdueItem {
+  border: 1px solid var(--color-border);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all var(--transition-fast);
+  animation: slideInUp 0.2s ease;
+}
+
+.overdueItem:hover {
+  border-color: var(--color-warning);
+  background-color: var(--color-warning-light);
+}
+
+.overdueName {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.overdueDate {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.modalContent {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  max-width: 42rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: scaleIn 0.2s ease;
+}
+
+.modalHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: var(--color-surface);
+  gap: 1rem;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+}
+
+.closeButton:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-primary-light);
+}
+
+.closeButton:active {
+  animation: buttonPress 0.2s ease;
+}
+
+.modalBody {
+  padding: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .gridContainer {
+    grid-template-columns: 200px 1fr;
+  }
 }
 
 @media (max-width: 768px) {
-  .dashboardContainer {
-    background-attachment: scroll;
+  .dashboardContent {
+    padding: 1rem;
   }
 
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .multiCardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboardTitle {
+    font-size: 1.5rem;
+  }
+
+  .dashboardHeader {
+    margin-bottom: 1rem;
+  }
+
+  .gridContainer {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .modalHeader {
+    padding: 1rem;
+  }
+
+  .modalBody {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
   .dashboardContent {
-    padding: 16px;
+    padding: 0.75rem;
+  }
+
+  .dashboardTitle {
+    font-size: 1.25rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .cardTitle {
+    font-size: 0.9375rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .filterSelect {
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.625rem;
+  }
+
+  .overdueItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .modalContent {
+    max-height: 95vh;
+    border-radius: var(--radius-lg);
+  }
+
+  .modalHeader,
+  .modalBody {
+    padding: 0.75rem;
+  }
+
+  .modalTitle {
+    font-size: 1.25rem;
   }
 }

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { useState, useEffect } from 'react';
 import { http } from '../api/http';
 import { useAuth } from '../hooks/useAuth';
+import styles from './TaskForm.module.css';
 
 const taskSchema = z.object({
   title: z.string().min(1).max(100),
@@ -77,42 +78,41 @@ export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
   };
 
   return (
-    <div className="border rounded p-6 bg-yellow-50">
-      <h2 className="text-xl font-semibold mb-4">Create New Task</h2>
-      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-        <div>
-          <label className="block text-sm font-medium mb-1">Title (max 100 chars)</label>
+    <div className={styles.formContainer}>
+      <h2 className={styles.title}>Create New Task</h2>
+      <form className={styles.formContent} onSubmit={form.handleSubmit(onSubmit)}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Title (max 100 chars)</label>
           <input
-            className="w-full border p-2 rounded"
+            className={styles.input}
             placeholder="Task title"
             maxLength={100}
             {...form.register('title')}
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Description</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Description</label>
           <textarea
-            className="w-full border p-2 rounded"
+            className={styles.textarea}
             placeholder="Task description"
-            rows={3}
             {...form.register('description')}
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Due Date</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Due Date</label>
           <input
             type="datetime-local"
-            className="w-full border p-2 rounded"
+            className={styles.input}
             {...form.register('dueDate')}
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Priority</label>
-            <select className="w-full border p-2 rounded" {...form.register('priority')}>
+        <div className={styles.gridTwoCols}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Priority</label>
+            <select className={styles.select} {...form.register('priority')}>
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
@@ -120,9 +120,9 @@ export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Status</label>
-            <select className="w-full border p-2 rounded" {...form.register('status')}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Status</label>
+            <select className={styles.select} {...form.register('status')}>
               <option value="TODO">To Do</option>
               <option value="IN_PROGRESS">In Progress</option>
               <option value="REVIEW">Review</option>
@@ -131,15 +131,15 @@ export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Assign To</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Assign To</label>
           {loadingUsers ? (
-            <select className="w-full border p-2 rounded" disabled>
+            <select className={`${styles.select} ${styles.loadingSelect}`} disabled>
               <option>Loading users...</option>
             </select>
           ) : (
             <select
-              className="w-full border p-2 rounded"
+              className={styles.select}
               {...form.register('assignedToId')}
             >
               <option value="">Select a user</option>
@@ -150,20 +150,22 @@ export function TaskForm({ onSuccess }: { onSuccess?: () => void }) {
               ))}
             </select>
           )}
-          <p className="text-xs text-gray-500 mt-1">
+          <p className={styles.helperText}>
             Select a registered user to assign this task to.
           </p>
         </div>
 
-        {error && <div className="text-red-600 text-sm">{error}</div>}
+        {error && <div className={styles.error}>{error}</div>}
 
-        <button
-          className="bg-blue-600 text-white px-4 py-2 rounded w-full disabled:opacity-50"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? 'Creating...' : 'Create Task'}
-        </button>
+        <div className={styles.buttonContainer}>
+          <button
+            className={styles.submitButton}
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? 'Creating...' : 'Create Task'}
+          </button>
+        </div>
       </form>
     </div>
   );

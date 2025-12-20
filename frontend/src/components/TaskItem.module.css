@@ -1,0 +1,191 @@
+/* TaskItem Component Styles */
+
+.taskItem {
+  border: 1px solid var(--color-border);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  transition: all var(--transition-smooth);
+  animation: slideInUp 0.2s ease;
+}
+
+.taskItem:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.contentSection {
+  flex: 1;
+  min-width: 200px;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.description {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.25rem;
+}
+
+.dueDate {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  margin-top: 0.25rem;
+}
+
+.actionsSection {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.statusSelect {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: inherit;
+}
+
+.statusSelect:hover:not(:disabled) {
+  border-color: var(--color-primary);
+}
+
+.statusSelect:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.statusSelect:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.statusBadge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.statusTodo {
+  background-color: var(--color-error-light);
+  color: #991b1b;
+}
+
+.statusInProgress {
+  background-color: var(--color-primary-light);
+  color: #1e40af;
+}
+
+.statusReview {
+  background-color: var(--color-warning-light);
+  color: #92400e;
+}
+
+.statusCompleted {
+  background-color: var(--color-success-light);
+  color: #065f46;
+}
+
+.priorityBadge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.priorityLow {
+  color: var(--color-priority-low);
+}
+
+.priorityMedium {
+  color: var(--color-priority-medium);
+}
+
+.priorityHigh {
+  color: var(--color-priority-high);
+}
+
+.priorityUrgent {
+  color: var(--color-priority-urgent);
+}
+
+.assignedMessage {
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.errorMessage {
+  font-size: 0.75rem;
+  color: var(--color-error);
+  margin-top: 0.25rem;
+  animation: slideInDown 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .taskItem {
+    padding: 0.625rem;
+  }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .actionsSection {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .title {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .taskItem {
+    padding: 0.5rem;
+  }
+
+  .contentSection {
+    min-width: 150px;
+  }
+
+  .title {
+    font-size: 0.75rem;
+  }
+
+  .description,
+  .dueDate {
+    font-size: 0.7rem;
+  }
+
+  .statusSelect,
+  .statusBadge,
+  .priorityBadge {
+    font-size: 0.7rem;
+    padding: 0.3125rem 0.375rem;
+  }
+}

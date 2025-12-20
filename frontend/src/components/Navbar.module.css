@@ -1,0 +1,291 @@
+/* Navbar Component Styles */
+
+.navbar {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  animation: slideInDown 0.3s ease;
+}
+
+.navContent {
+  max-width: 7xl;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  height: 4rem;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--color-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.centerSection {
+  display: flex;
+  justify-content: center;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notificationContainer {
+  position: relative;
+}
+
+.notificationButton {
+  position: relative;
+  padding: 0.5rem;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationButton:hover {
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  background-color: var(--color-error);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: scaleIn 0.2s ease;
+}
+
+.notificationPopup {
+  position: absolute;
+  right: 0;
+  top: 2.5rem;
+  width: 20rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  animation: slideInDown 0.2s ease;
+  overflow: hidden;
+}
+
+.notificationHeader {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.notificationList {
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+.notificationItem {
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.75rem 1rem;
+  transition: background-color var(--transition-fast);
+}
+
+.notificationItem:hover {
+  background-color: #f8fafc;
+}
+
+.notificationMessage {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.notificationMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notificationTime {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.dismissButton {
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: color var(--transition-fast);
+  padding: 0;
+}
+
+.dismissButton:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.emptyNotifications {
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: 0.875rem;
+}
+
+.userGreeting {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  display: none;
+}
+
+.navButton {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.navButton:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.navButton:active {
+  animation: buttonPress 0.2s ease;
+}
+
+.createTaskButton {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  font-family: inherit;
+}
+
+.createTaskButton:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.createTaskButton:active {
+  animation: buttonPress 0.2s ease;
+}
+
+.mobileCreateTaskButton {
+  display: none;
+  width: 100%;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  font-family: inherit;
+  margin-top: 0.75rem;
+}
+
+.mobileCreateTaskButton:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+/* Desktop breakpoint */
+@media (min-width: 768px) {
+  .userGreeting {
+    display: block;
+  }
+
+  .mobileCreateTaskButton {
+    display: none !important;
+  }
+}
+
+/* Tablet and mobile breakpoints */
+@media (max-width: 767px) {
+  .navContent {
+    grid-template-columns: auto 1fr;
+    height: auto;
+    flex-wrap: wrap;
+  }
+
+  .centerSection {
+    display: none;
+  }
+
+  .notificationPopup {
+    right: -1rem;
+    left: -1rem;
+    width: auto;
+    border-radius: 0;
+  }
+
+  .mobileCreateTaskButton {
+    display: block;
+  }
+}
+
+/* Mobile phone sizes */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.5rem;
+  }
+
+  .navContent {
+    gap: 0.5rem;
+  }
+
+  .brand {
+    font-size: 1rem;
+  }
+
+  .notificationPopup {
+    width: 90vw;
+    max-width: 20rem;
+  }
+
+  .navButton {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+}

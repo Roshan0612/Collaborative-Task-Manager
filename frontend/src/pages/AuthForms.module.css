@@ -4,7 +4,8 @@
   justify-content: center;
   min-height: 100vh;
   padding: 16px;
-  background-color: #f9fafb;
+  background-color: var(--color-background);
+  animation: fadeIn 0.4s ease;
 }
 
 .formWrapper {
@@ -13,18 +14,19 @@
 }
 
 .formCard {
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   padding: 32px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  animation: slideInUp 0.3s ease;
 }
 
 .title {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 24px;
-  color: #111827;
+  color: var(--color-text-primary);
   text-align: center;
 }
 
@@ -37,28 +39,31 @@
 
 .input {
   width: 100%;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   padding: 10px 12px;
   font-size: 14px;
   font-family: inherit;
-  transition: border-color 0.2s;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
 .input::placeholder {
-  color: #9ca3af;
+  color: var(--color-text-tertiary);
 }
 
 .error {
-  color: #dc2626;
+  color: var(--color-error);
   font-size: 13px;
   margin-top: -8px;
+  animation: slideInDown 0.2s ease;
 }
 
 .buttonLogin,
@@ -66,28 +71,33 @@
   width: 100%;
   padding: 10px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all var(--transition-smooth);
   color: white;
+  font-family: inherit;
 }
 
 .buttonLogin {
-  background-color: #2563eb;
+  background-color: var(--color-primary);
 }
 
 .buttonLogin:hover:not(:disabled) {
-  background-color: #1d4ed8;
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+  animation: buttonPress 0.2s ease;
 }
 
 .buttonRegister {
-  background-color: #16a34a;
+  background-color: var(--color-success);
 }
 
 .buttonRegister:hover:not(:disabled) {
-  background-color: #15803d;
+  background-color: #059669;
+  box-shadow: var(--shadow-md);
+  animation: buttonPress 0.2s ease;
 }
 
 .buttonLogin:disabled,
@@ -99,23 +109,24 @@
 .helperText {
   text-align: center;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--color-text-secondary);
 }
 
 .link {
   background: none;
   border: none;
-  color: #2563eb;
+  color: var(--color-primary);
   text-decoration: none;
   cursor: pointer;
   font-weight: 500;
   padding: 0;
   font-size: 13px;
-  transition: color 0.2s;
+  transition: color var(--transition-fast);
+  font-family: inherit;
 }
 
 .link:hover {
-  color: #1d4ed8;
+  color: var(--color-primary-dark);
   text-decoration: underline;
 }
 
